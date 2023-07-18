@@ -2,10 +2,14 @@
 import { useEffect, useState } from 'react';
 import { useAppStateContext } from '../context/AppStateContext';
 import axios from 'axios'
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom'
+
 
 const Home = () => {
 
   const { state } = useAppStateContext()
+  const navigate = useNavigate()
 
   // const imageUrl = "http://frontend.test.mwanga.ng" + state.user.displayImage
 
@@ -18,10 +22,16 @@ const Home = () => {
   let targetAmountValue = (targetAmount / targetAmount) * 100
 
 
+  const logout = () =>{
+    localStorage.clear()
+    navigate('/login')
+  }
+
+
   return (
     <main className='p-5 md:p-10 max-w-[1200px] mx-auto'>
       <section className='w-full h-[200px] pattern-bg rounded-t-[20px] p-3 flex'>
-        <button className='text-white h-[45px] w-[45px] bg-white rounded-[50%] grid place-items-center ml-auto hover:bg-[#ddd]'>
+        <button onClick={logout} className='text-white h-[45px] w-[45px] bg-white rounded-[50%] grid place-items-center ml-auto hover:bg-[#ddd]'>
           <span className="material-icons text-primary">logout</span>
         </button>
       </section>
@@ -98,7 +108,7 @@ const Comments = ({ userId }) => {
   const submitCommentHandler = async (formData) => {
 
     try {
-      const response = await fetch(`http://localhost:5000/comment/${userId}`, {
+      const response = await fetch(`https://agent-express-proxy-server.vercel.app/comment/${userId}`, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json'
@@ -108,8 +118,10 @@ const Comments = ({ userId }) => {
 
       const result = await response.json()
       console.log(result)
+      toast.success('Comment added!')
     } catch (err) {
       console.log(err)
+      toast.error('Comment not added')
     }
 
   }

@@ -96,8 +96,8 @@ const Login = () => {
 
   return (
     <main className='py-[5rem] px-4 md:px-6'>
-      <div className='w-full max-w-[1100px] mx-auto grid grid-cols-2 gap-x-10'>
-        <section>
+      <div className='w-full max-w-[1100px] mx-auto grid md:grid-cols-2 gap-x-10'>
+        <section className='hidden md:block'>
           <div>
             <h1 className='font-semibold text-[50px] mb-5 tracking-tighter'>Sign in to</h1>
             <h2 className='font-semibold text-[32px] tracking-tight'>
@@ -111,6 +111,9 @@ const Login = () => {
         </section>
         <section>
           <form onSubmit={submit} className='pt-[50px] flex flex-col gap-y-10 pt-20'>
+            <header className='text-center'>
+              <h1 className='font-semibold text-[32px] tracking-tight'>Welcome back</h1>
+            </header>
             <fieldset className='flex items-center'>
               <Input
                 type="email"
