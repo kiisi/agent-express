@@ -40,7 +40,8 @@
 .mini-spinner {
   width: 30px;
   height: 30px;
-  border: 5px dotted #FFF;
+  border-width: 5px;
+  border-style:dotted;
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -81,7 +82,7 @@
 }
 
 .skill-progress-bg {
-  background: hsl(0, 2%, 47%);
+  background: hsl(0deg 10% 82%);
   width: 100%;
   height: 8px;
   border-radius: 10px;
@@ -131,9 +132,9 @@
   left: -33px;
   height: 6px;
   width: 6px;
-  background: #adabd1;
+  background: #fff;
   border-radius: 50%;
-  box-shadow: 0 0 0 4px hsl(0, 0%, 22%);
+  box-shadow: 0 0 0 4px #4D47C3;
 }
 
 .timeline-text {

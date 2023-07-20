@@ -4,6 +4,7 @@ import { useAppStateContext } from '../context/AppStateContext';
 import axios from 'axios'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom'
+import MiniSpinner from '../components/MiniSpinner'
 
 
 const Home = () => {
@@ -22,7 +23,7 @@ const Home = () => {
   let targetAmountValue = (targetAmount / targetAmount) * 100
 
 
-  const logout = () =>{
+  const logout = () => {
     localStorage.clear()
     navigate('/login')
   }
@@ -91,6 +92,7 @@ const Comments = ({ userId }) => {
 
 
   const [comments, setComments] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     (async () => {
@@ -101,14 +103,15 @@ const Comments = ({ userId }) => {
       } catch (err) {
         console.log(err)
       }
+      setLoading(false)
     })()
 
-  }, [])
+  }, [loading])
 
   const submitCommentHandler = async (formData) => {
 
     try {
-      const response = await fetch(`https://agent-express-proxy-server.vercel.app/comment/${userId}`, {
+      const response = await fetch(`https://peach-puffer-vest.cyclic.app/comment/${userId}`, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json'
@@ -119,6 +122,7 @@ const Comments = ({ userId }) => {
       const result = await response.json()
       console.log(result)
       toast.success('Comment added!')
+      setLoading(true)
     } catch (err) {
       console.log(err)
       toast.error('Comment not added')
@@ -128,10 +132,17 @@ const Comments = ({ userId }) => {
 
   return (
     <div>
+      {
+        loading && (
+          <div className='grid place-items-center py-12'>
+            <MiniSpinner color='border-primary' />
+          </div>
+        )
+      }
       <div className='pb-10'>
         <ol className="timeline-list">
           {
-            comments && comments.length !== 0
+            !loading && comments && comments.length !== 0
               ?
               comments.map((cm, i) => {
                 if (cm.title) {
@@ -172,6 +183,13 @@ const CommentInput = ({ submit }) => {
 
   const submitComment = (e) => {
     e.preventDefault()
+
+    if(!formData.title){
+      return toast.error("Enter a comment title!")
+    }
+    if(!formData.comment){
+      return toast.error("Enter a comment!")
+    }
 
     submit(formData)
     setFormData({
